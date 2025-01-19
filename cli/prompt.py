@@ -1,24 +1,33 @@
+#!/usr/bin/env python3
+
 import sys
 import ai_models
 from ai_models import configure_model, remove_model, load_models_api
 
+
 def user_command_line_prompt():
     args = [x for x in sys.argv]
     load_models_api()
-    prompt_by_user = args[1]
+    
+    if len(args) > 1 and not args[1].startswith('-s'):
+        prompt_by_user = args[1]
+    else:
+        prompt_by_user = None
     entire_cmd_command = ' '.join(args[2:])
+        
     all_input_flags = entire_cmd_command.split('--')
     all_input_flags = [x.strip() for x in all_input_flags]
     return prompt_by_user, all_input_flags  
 
-def prompt_for_llm(prompt_by_user):
-    # Modify the prompt and send it to the model
-    prompt_by_user += " give response in such a way that is outputted on a command-line interface "
-    r = ai_models.generate_output("gemini-1.5-flash", prompt_by_user)
-    print()
-    print(r)
-
 prompt_by_user, all_input_flags = user_command_line_prompt()
+
+def prompt_for_llm(prompt_by_user):
+    if prompt_by_user:
+        prompt_by_user += " give response in such a way that is outputted on a command-line interface "
+        r = ai_models.generate_output("gemini-1.5-flash", prompt_by_user)
+        print()
+        print(r)
+
 
 prompt_for_llm(prompt_by_user)
 

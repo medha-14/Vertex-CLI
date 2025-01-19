@@ -3,18 +3,18 @@ import google.generativeai as genai
 
 FILE_NAME = "models_api.json"
 
-
 def load_models_api():
     try:
         with open(FILE_NAME, 'r') as f:
             return json.load(f)
     except FileNotFoundError:
-        print("File not found")    
+          pass
                 
         
 def update_models_api_json(updated_json_data):
     with open(FILE_NAME, 'w') as f:
         json.dump(updated_json_data, f, indent=4)
+
 
 def api_key_model_selection(model_name):
     models_api_dict = load_models_api()
@@ -32,6 +32,7 @@ def remove_model(model_name):
         print(f"Model '{model_name}' removed successfully.")
     else:
         raise ValueError(f"Model '{model_name}' is not found.")
+
 
 def configure_model(model_name, api_key):
     models_api_dict = load_models_api()
