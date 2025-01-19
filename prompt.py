@@ -1,9 +1,10 @@
 import sys
 import ai_models
-from ai_models import configure_model, add_model, remove_model
+from ai_models import configure_model, remove_model, load_models_api
 
 def user_command_line_prompt():
     args = [x for x in sys.argv]
+    load_models_api()
     prompt_by_user = args[1]
     entire_cmd_command = ' '.join(args[2:])
     all_input_flags = entire_cmd_command.split('--')
@@ -31,11 +32,6 @@ if all_input_flags:
             configure_model(flags_list[1], flags_list[2])
             print(f"Configured model: {flags_list[1]} with API key: {flags_list[2]}")
 
-        elif flag.startswith('add'):
-            flags_list = flag.split(' ')
-            add_model(flags_list[1], flags_list[2])
-            print(f"Added model: {flags_list[1]} with API key: {flags_list[2]}")
-
         elif flag.startswith('remove'):
             flags_list = flag.split(' ')
             print("Removing model:", flags_list[1])
@@ -44,7 +40,7 @@ if all_input_flags:
         elif flag == 'help':
             print("Usage: python3 main.py <prompt>")
             print("Example: python3 main.py 'How are you?'")
-            print("Flags are: config <model_name> <api_key>, add <model_name> <api_key>, remove <model_name>")
+            print("Flags are: add <model_name> <api_key>, remove <model_name>")
             print()
 
-    print("Updated models_api dictionary:", ai_models.models_api)  # Print to verify
+

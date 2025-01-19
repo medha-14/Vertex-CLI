@@ -1,41 +1,45 @@
+import json
 import google.generativeai as genai
 
+FILE_NAME = "models_api.json"
 
-models_api = {
-            "gemini-1.5-flash": "AIzaSyCWKme9gf6v_9aqQWCC7tUyYZxoqXVHIfQ",
-              "gemini-1.5-interactive": None,
-              "gpt-4o": None,
-              "gemini-1.5-creative": None
-              }
+def load_models_api():
+    try:
+        with open(FILE_NAME, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
 
+def update_models_api_json(updated_json_data):
+    with open(FILE_NAME, 'w') as f:
+        json.dump(updated_json_data, f, indent=4)
 
 def api_key_model_selection(model_name):
-    if model_name in models_api:
-        return models_api[model_name]
+    models_api_dict = load_models_api()
+    if model_name in models_api_dict and models_api_dict[model_name]:
+        return models_api_dict[model_name]
     else:
-        raise ValueError("Model is not available, please add it to the models_api dictionary")
-    
-    
-def add_model(model_name, api_key):
-    models_api[model_name] = api_key
-    
-    
+        raise ValueError(f"Model '{model_name}' is not available or has no API key. Please add it.")
+
+
 def remove_model(model_name):
-    if model_name in models_api:
-        del models_api[model_name] 
+    models_api_dict = load_models_api()
+    if model_name in models_api_dict:
+        del models_api_dict[model_name]
+        update_models_api_json(models_api_dict)
+        print(f"Model '{model_name}' removed successfully.")
     else:
-        raise ValueError("Model is not available, please add it to the models_api dictionary")
-    
-    
+        raise ValueError(f"Model '{model_name}' is not found.")
+
 def configure_model(model_name, api_key):
-    models_api[model_name] = api_key
-    
-    
-def generate_output(model_name , prompt_by_user):
-    YOUR_API_KEY = api_key_model_selection(model_name)
-                                                                                                                                            
-    genai.configure(api_key=YOUR_API_KEY)
+    models_api_dict = load_models_api()
+    models_api_dict[model_name] = api_key
+    update_models_api_json(models_api_dict)
+    print("Model added successfully.")
+
+def generate_output(model_name, prompt_by_user):
+    api_key = api_key_model_selection(model_name)
+    genai.configure(api_key=api_key)
     model = genai.GenerativeModel(model_name)
     response = model.generate_content(prompt_by_user)
     return response.text
-
