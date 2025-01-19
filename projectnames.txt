@@ -1,0 +1,7 @@
+cuboid 
+hexagon
+palandrome 
+edge
+vertex ** 
+
+alies tex 
