@@ -3,6 +3,7 @@
 import sys
 import ai_models
 from ai_models import configure_model, remove_model, load_models_api
+from prettify_llm_output import prettify_llm_output
 
 
 def user_command_line_prompt():
@@ -21,35 +22,42 @@ def user_command_line_prompt():
 
 prompt_by_user, all_input_flags = user_command_line_prompt()
 
+
 def prompt_for_llm(prompt_by_user):
     if prompt_by_user:
         prompt_by_user += " give response in such a way that is outputted on a command-line interface "
+        
         r = ai_models.generate_output("gemini-1.5-flash", prompt_by_user)
-        print()
-        print(r)
+        prettify_llm_output(r)
 
 
+def handle_input_flags(all_input_flags):
+    
+    if all_input_flags:
+        if not all_input_flags[0] == '':
+            print("Prompt should be quoted in double quotes, and the flags must be spaced out") 
+
+        for flag in all_input_flags:
+            if flag.startswith('config'):
+                flags_list = flag.split(' ')
+                configure_model(flags_list[1], flags_list[2])
+                print(f"Configured model: {flags_list[1]} with API key: {flags_list[2]}")
+
+            elif flag.startswith('remove'):
+                flags_list = flag.split(' ')
+                print("Removing model:", flags_list[1])
+                remove_model(flags_list[1])
+
+            elif flag == 'help':
+                print("Usage: python3 main.py <prompt>")
+                print("Example: python3 main.py 'How are you?'")
+                print("Flags are: add <model_name> <api_key>, remove <model_name>")
+                print()
+    
+
+
+#Outputs LLM output
 prompt_for_llm(prompt_by_user)
 
-if all_input_flags:
-    if not all_input_flags[0] == '':
-        print("Prompt should be quoted in double quotes, and the flags must be spaced out") 
-
-    for flag in all_input_flags:
-        if flag.startswith('config'):
-            flags_list = flag.split(' ')
-            configure_model(flags_list[1], flags_list[2])
-            print(f"Configured model: {flags_list[1]} with API key: {flags_list[2]}")
-
-        elif flag.startswith('remove'):
-            flags_list = flag.split(' ')
-            print("Removing model:", flags_list[1])
-            remove_model(flags_list[1])
-
-        elif flag == 'help':
-            print("Usage: python3 main.py <prompt>")
-            print("Example: python3 main.py 'How are you?'")
-            print("Flags are: add <model_name> <api_key>, remove <model_name>")
-            print()
-
-
+#Handle input flags 
+handle_input_flags(all_input_flags)
