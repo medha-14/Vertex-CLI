@@ -8,8 +8,9 @@ model configurations, and generation of AI responses.
 
 import json
 import google.generativeai as genai
+import os
 
-FILE_NAME = "models_api.json"
+FILE_NAME = os.path.join(os.path.dirname(__file__), "..", "models_api.json")
 
 def load_models_api():
     """
@@ -28,7 +29,7 @@ def load_models_api():
             return json.load(f)
     except FileNotFoundError:
         pass
-
+        
 def update_models_api_json(updated_json_data):
     """
     Update the models API configuration JSON file.
@@ -58,6 +59,7 @@ def api_key_model_selection(model_name):
         'your_api_key_here'
     """
     models_api_dict = load_models_api()
+    print(models_api_dict, " model api dict")
     if model_name in models_api_dict and models_api_dict[model_name]:
         return models_api_dict[model_name]
     else:
@@ -113,8 +115,8 @@ def generate_output(model_name, prompt_by_user):
     Returns:
         str: Generated response text.
     """
-    # api_key = api_key_model_selection(model_name)
-    api_key = "AIzaSyCWKme9gf6v_9aqQWCC7tUyYZxoqXVHIfQ"
+    api_key = api_key_model_selection(model_name)
+    # api_key = "AIzaSyCWKme9gf6v_9aqQWCC7tUyYZxoqXVHIfQ"
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel(model_name)
     response = model.generate_content(prompt_by_user)
