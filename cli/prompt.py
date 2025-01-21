@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+
+import subprocess
+import os
+import shutil
 import sys
 import ai_models
 from ai_models import configure_model, remove_model, load_models_api
@@ -68,8 +72,34 @@ def handle_input_flags(all_input_flags):
                 print("Flags are: --config <model_name> <api_key>, remove <model_name>")
                 print()
 
-# Outputs LLM output
-prompt_for_llm(prompt_by_user)
+def setup_symbolic_link():
+    """
+    Creates a symbolic link for this script in /usr/local/bin as 'tex'.
+    Ensures the script can be run directly using the 'tex' command.
+    """
+    script_path = os.path.abspath(sys.argv[0])  
+    symlink_path = "/usr/local/bin/tex"  
+    try:
+        os.chmod(script_path, 0o755)
 
-# Handle input flags 
-handle_input_flags(all_input_flags)
+        if os.path.islink(symlink_path) or os.path.exists(symlink_path):
+            print(f"A symlink or file named 'tex' already exists at {symlink_path}.")
+            return
+
+        # Create the symbolic link
+        subprocess.run(["sudo", "ln", "-s", script_path, symlink_path], check=True)
+        print(f"Symbolic link created: {symlink_path} -> {script_path}")
+
+    except PermissionError:
+        print("Permission denied. Try running the script with 'sudo'.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if len(sys.argv) > 1 and sys.argv[1] == '--setup':
+    setup_symbolic_link()
+else:
+    # Outputs LLM output
+    prompt_for_llm(prompt_by_user)
+
+    # Handle input flags
+    handle_input_flags(all_input_flags)
