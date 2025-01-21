@@ -25,7 +25,7 @@ Follow these steps to get started:
 
 1. Run the initial setup script:
    ```bash
-   python3 prompt.py --setup
+   python3 cli/prompt.py --setup
    ```
 
 2. Configure the CLI with your model details:
