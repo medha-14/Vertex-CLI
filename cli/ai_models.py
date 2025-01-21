@@ -59,7 +59,6 @@ def api_key_model_selection(model_name):
         'your_api_key_here'
     """
     models_api_dict = load_models_api()
-    print(models_api_dict, " model api dict")
     if model_name in models_api_dict and models_api_dict[model_name]:
         return models_api_dict[model_name]
     else:

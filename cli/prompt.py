@@ -65,7 +65,7 @@ def handle_input_flags(all_input_flags):
             elif flag == 'help':
                 print("Usage: python3 main.py <prompt>")
                 print("Example: python3 main.py 'How are you?'")
-                print("Flags are: add <model_name> <api_key>, remove <model_name>")
+                print("Flags are: --config <model_name> <api_key>, remove <model_name>")
                 print()
 
 # Outputs LLM output
