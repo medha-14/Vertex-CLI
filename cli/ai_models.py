@@ -86,6 +86,24 @@ def remove_model(model_name):
     else:
         raise ValueError(f"Model '{model_name}' is not found.")
 
+
+def create_json_file():
+    """
+    Create a JSON file with the specified default configuration.
+
+    Args:
+        FILE_NAME (str): The name of the file to be created.
+        default_config (dict): The default configuration to write to the file.
+    """
+    default_config = {
+        "gemini-1.5-flash": None,
+        "gemini-1.5-interactive": None,
+        "gemini-1.5-creative": None
+    }
+    
+    with open(FILE_NAME, 'w') as f:
+        json.dump(default_config, f, indent=4)
+            
 def configure_model(model_name, api_key):
     """
     Add or update a model's API key configuration.
