@@ -72,11 +72,14 @@ def handle_input_flags(all_input_flags):
                 print("Flags are: --config <model_name> <api_key>, remove <model_name>")
                 print()
 
-def setup_symbolic_link():
+def setup():
     """
     Creates a symbolic link for this script in /usr/local/bin as 'tex'.
     Ensures the script can be run directly using the 'tex' command.
     """
+    from ai_models import create_json_file
+    create_json_file()
+    
     script_path = os.path.abspath(sys.argv[0])  
     symlink_path = "/usr/local/bin/tex"  
     try:
@@ -96,7 +99,7 @@ def setup_symbolic_link():
         print(f"An error occurred: {e}")
 
 if len(sys.argv) > 1 and sys.argv[1] == '--setup':
-    setup_symbolic_link()
+    setup()
 else:
     # Outputs LLM output
     prompt_for_llm(prompt_by_user)
