@@ -30,7 +30,7 @@ Follow these steps to get started:
 
 2. Configure the CLI with your model details:
    ```bash
-   tex -s config <gemini-model> <model-api-key>
+   tex -s --config <gemini-model> <model-api-key>
    ```
    Replace `<gemini-model>` with your model name and `<model-api-key>` with your API key.
 
