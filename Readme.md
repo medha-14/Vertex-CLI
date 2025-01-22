@@ -45,6 +45,7 @@ To start using Vertex CLI, simply type the following command:
 ```bash
 tex "tell me about solar system"
 ```
+![alt text](docs/readme_eg.png)
 
 Replace `"tell me about solar system"` with any query you'd like. Vertex CLI will process your input and provide accurate, AI-generated insights.
 
