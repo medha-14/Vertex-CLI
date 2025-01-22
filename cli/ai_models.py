@@ -12,6 +12,7 @@ import os
 
 FILE_NAME = os.path.join(os.path.dirname(__file__), "..", "models_api.json")
 
+
 def load_models_api():
     """
     Load API configurations from JSON file.
@@ -25,11 +26,12 @@ def load_models_api():
         {'gemini-1.5-flash': 'api_key_123', 'gpt-4': 'api_key_456'}
     """
     try:
-        with open(FILE_NAME, 'r') as f:
+        with open(FILE_NAME, "r") as f:
             return json.load(f)
     except FileNotFoundError:
         pass
-        
+
+
 def update_models_api_json(updated_json_data):
     """
     Update the models API configuration JSON file.
@@ -38,8 +40,9 @@ def update_models_api_json(updated_json_data):
         updated_json_data (dict): Updated configuration data to be written to file.
 
     """
-    with open(FILE_NAME, 'w') as f:
+    with open(FILE_NAME, "w") as f:
         json.dump(updated_json_data, f, indent=4)
+
 
 def api_key_model_selection(model_name):
     """
@@ -62,7 +65,10 @@ def api_key_model_selection(model_name):
     if model_name in models_api_dict and models_api_dict[model_name]:
         return models_api_dict[model_name]
     else:
-        raise ValueError(f"Model '{model_name}' is not available or has no API key. Please add it.")
+        raise ValueError(
+            f"Model '{model_name}' is not available or has no API key. Please add it."
+        )
+
 
 def remove_model(model_name):
     """
@@ -98,12 +104,13 @@ def create_json_file():
     default_config = {
         "gemini-1.5-flash": None,
         "gemini-1.5-interactive": None,
-        "gemini-1.5-creative": None
+        "gemini-1.5-creative": None,
     }
-    
-    with open(FILE_NAME, 'w') as f:
+
+    with open(FILE_NAME, "w") as f:
         json.dump(default_config, f, indent=4)
-            
+
+
 def configure_model(model_name, api_key):
     """
     Add or update a model's API key configuration.
@@ -120,6 +127,7 @@ def configure_model(model_name, api_key):
     models_api_dict[model_name] = api_key
     update_models_api_json(models_api_dict)
     print("Model added successfully.")
+
 
 def generate_output(model_name, prompt_by_user):
     """
