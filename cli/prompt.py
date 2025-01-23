@@ -24,10 +24,10 @@ def user_command_line_prompt():
     if len(args) > 1 and not args[1].startswith("-"):
         prompt_by_user = args[1]
         entire_cmd_command = " ".join(args[2:])
-    else: # If the user did not provide a prompt
+    else:  # If the user did not provide a prompt
         prompt_by_user = None
         entire_cmd_command = " ".join(args[1:])
-    
+
     all_input_flags = entire_cmd_command.split("--")
     all_input_flags = [x.strip() for x in all_input_flags]
 
@@ -36,15 +36,16 @@ def user_command_line_prompt():
 
 prompt_by_user, all_input_flags = user_command_line_prompt()
 
-def last_command_line_prompt(last_number_of_commands):
-    history_file = os.path.expanduser('~/.bash_history')  
 
-    with open(history_file, 'r') as file:
+def last_command_line_prompt(last_number_of_commands):
+    history_file = os.path.expanduser("~/.bash_history")
+
+    with open(history_file, "r") as file:
         history_lines = file.readlines()
-    num = last_number_of_commands 
+    num = last_number_of_commands
     last_commands = history_lines[-num:]
 
-    return ''.join(last_commands)
+    return "".join(last_commands)
 
 
 def prompt_for_llm(prompt_for_llm):
@@ -54,24 +55,33 @@ def prompt_for_llm(prompt_for_llm):
     Args:
         prompt_by_user (str): The prompt provided by the user.
     """
-    prompt_for_llm += " give response in such a way that is outputted on a command-line interface "
+    prompt_for_llm += (
+        " give response in such a way that is outputted on a command-line interface "
+    )
 
     r = ai_models.generate_output("gemini-1.5-flash", prompt_for_llm)
     prettify_llm_output(r)
 
 
 def debug_last_command_line_prompt(prompt_by_user, all_input_flags):
-    
+
     if len(all_input_flags) == 3:
         last_number_of_commands = int(all_input_flags[2])
     else:
         last_number_of_commands = 3
-        
+
     if prompt_by_user:
-        prompt_by_vertetx =  last_command_line_prompt(last_number_of_commands) + prompt_by_user + " basically output what is wrong with the commands used and suggest right ones"
-    else :
-        prompt_by_vertetx =  last_command_line_prompt(last_number_of_commands) + " output what is wrong with the commands used and suggest right ones, dont exlain about tex command"
-    
+        prompt_by_vertetx = (
+            last_command_line_prompt(last_number_of_commands)
+            + prompt_by_user
+            + " basically output what is wrong with the commands used and suggest right ones"
+        )
+    else:
+        prompt_by_vertetx = (
+            last_command_line_prompt(last_number_of_commands)
+            + " output what is wrong with the commands used and suggest right ones, dont exlain about tex command"
+        )
+
     print("Prompt by vertex:", prompt_by_vertetx)
     print()
     prompt_for_llm(prompt_by_vertetx)
@@ -91,19 +101,18 @@ def handle_input_flags(all_input_flags):
             )
 
         for flag in all_input_flags:
-            
+
             if flag.startswith("config"):
                 flags_list = flag.split(" ")
                 configure_model(flags_list[1], flags_list[2])
                 print(
                     f"Configured model: {flags_list[1]} with API key: {flags_list[2]}"
                 )
-                
+
             elif flag == "list":
                 print("Listing all models:")
                 ai_models.list_models()
-                
-                    
+
             elif flag.startswith("remove"):
                 flags_list = flag.split(" ")
                 print("Removing model:", flags_list[1])

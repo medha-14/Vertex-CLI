@@ -5,8 +5,8 @@ from rich.markdown import Markdown
 
 def prettify_llm_output(response):
     """
-    Prettifies the output from a language model response by stripping leading 
-    and trailing whitespace and code block markers, then prints it as Markdown 
+    Prettifies the output from a language model response by stripping leading
+    and trailing whitespace and code block markers, then prints it as Markdown
     to the console.
 
     Args:
