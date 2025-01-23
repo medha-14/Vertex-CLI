@@ -146,9 +146,6 @@ def setup():
 
     Ensures the script can be run directly using the 'tex' command.
     """
-    from ai_models import create_json_file
-
-    create_json_file()
 
     script_path = os.path.abspath(sys.argv[0])
     symlink_path = "/usr/local/bin/tex"
@@ -170,7 +167,17 @@ def setup():
 
 
 if len(sys.argv) > 1 and sys.argv[1] == "--setup":
-    setup()
+    if sys.platform == "linux" or sys.platform == "darwin":
+        setup()
+    else:
+        print("This script is not supported on Windows.")
+        print(
+            "Please run the script directly using 'python3 main.py' or add it in the env variable."
+        )
+        print("We will support this in future versions.")
+    from ai_models import create_json_file
+
+    create_json_file()
 else:
     # Outputs LLM output
     if prompt_by_user:
