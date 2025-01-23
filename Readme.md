@@ -30,7 +30,7 @@ Follow these steps to get started:
 
 2. Configure the CLI with your model details:
    ```bash
-   tex -s --config <gemini-model> <model-api-key>
+   tex --config <gemini-model> <model-api-key>
    ```
    Replace `<gemini-model>` with your model name and `<model-api-key>` with your API key.
 
@@ -51,13 +51,37 @@ Replace `"tell me about solar system"` with any query you'd like. Vertex CLI wil
 
 ---
 
-## Features
+### Debugging Mode (Beta Feature)
 
-- **Seamless Setup:** Quickly configure the CLI with minimal effort.
-- **Flexible Queries:** Ask anything, and Vertex CLI will provide precise responses.
-- **Powerful Integration:** Leverage advanced models with API key support.
+Debugging functionality is currently under development but can already be utilized to analyze issues with recent commands. Here’s how to use it:
 
----
+Debug the Last Two Commands
+
+To identify potential issues with the last two executed commands, use:
+
+```bash
+tex --debug
+```
+
+### Customize the Number of Commands to Analyze
+
+You can specify the number of recent commands to debug by adding the `--5` flag (or replace `5` with your desired number):
+
+```bash
+tex --debug --5
+```
+
+### Add a Custom Debugging Message
+
+When debugging, you can include a custom message to specify your assumptions or observations. For example:
+
+```bash
+tex "I believe this can be solved by changing the environment variable" --debug
+```
+
+This helps provide context and ensures more targeted debugging insights.
+
+
 
 ## Contributing
 
