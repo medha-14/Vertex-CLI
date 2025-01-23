@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 import subprocess
 import os
 import shutil
@@ -9,13 +8,14 @@ import ai_models
 from ai_models import configure_model, remove_model, load_models_api
 from prettify_llm_output import prettify_llm_output
 
-
 def user_command_line_prompt():
     """
-    Parses the command-line arguments provided by the user.
+    Parses command-line arguments provided by the user.
 
     Returns:
-        tuple: A tuple containing the user's prompt (str) and a list of input flags (list).
+        tuple: A tuple containing:
+            - prompt_by_user (str or None): The user's prompt, if provided.
+            - all_input_flags (list): A list of input flags provided by the user.
     """
     args = [x for x in sys.argv]
     load_models_api()
@@ -33,81 +33,77 @@ def user_command_line_prompt():
 
     return prompt_by_user, all_input_flags
 
-
 prompt_by_user, all_input_flags = user_command_line_prompt()
 
-
 def last_command_line_prompt(last_number_of_commands):
-    history_file = os.path.expanduser("~/.bash_history")
+    """
+    Retrieves the last N commands from the user's shell history.
 
-    with open(history_file, "r") as file:
+    Args:
+        last_number_of_commands (int): The number of recent commands to retrieve.
+
+    Returns:
+        str: A string containing the last N commands.
+    """
+    history_file = os.path.expanduser('~/.bash_history')  
+
+    with open(history_file, 'r') as file:
         history_lines = file.readlines()
-    num = last_number_of_commands
-    last_commands = history_lines[-num:]
+    
+    last_commands = history_lines[-last_number_of_commands:]
 
-    return "".join(last_commands)
-
+    return ''.join(last_commands)
 
 def prompt_for_llm(prompt_for_llm):
     """
-    Generates and prints the output from the language model based on the user's prompt.
+    Generates and displays the output from the language model based on the user's prompt.
 
     Args:
-        prompt_by_user (str): The prompt provided by the user.
+        prompt_for_llm (str): The prompt to send to the language model.
     """
-    prompt_for_llm += (
-        " give response in such a way that is outputted on a command-line interface "
-    )
+    prompt_for_llm += " give response in such a way that is outputted on a command-line interface "
 
-    r = ai_models.generate_output("gemini-1.5-flash", prompt_for_llm)
-    prettify_llm_output(r)
-
+    response = ai_models.generate_output("gemini-1.5-flash", prompt_for_llm)
+    prettify_llm_output(response)
 
 def debug_last_command_line_prompt(prompt_by_user, all_input_flags):
+    """
+    Analyzes the last few shell commands to identify errors and suggests corrections.
 
+    Args:
+        prompt_by_user (str or None): The prompt provided by the user, if any.
+        all_input_flags (list): A list of input flags provided by the user.
+    """
     if len(all_input_flags) == 3:
         last_number_of_commands = int(all_input_flags[2])
     else:
         last_number_of_commands = 3
 
     if prompt_by_user:
-        prompt_by_vertetx = (
-            last_command_line_prompt(last_number_of_commands)
-            + prompt_by_user
-            + " basically output what is wrong with the commands used and suggest right ones"
-        )
+        prompt_by_vertex = last_command_line_prompt(last_number_of_commands) + prompt_by_user + " basically output what is wrong with the commands used and suggest right ones"
     else:
-        prompt_by_vertetx = (
-            last_command_line_prompt(last_number_of_commands)
-            + " output what is wrong with the commands used and suggest right ones, dont exlain about tex command"
-        )
+        prompt_by_vertex = last_command_line_prompt(last_number_of_commands) + " output what is wrong with the commands used and suggest right ones, don’t explain about tex command"
 
-    print("Prompt by vertex:", prompt_by_vertetx)
+    print("Prompt by vertex:", prompt_by_vertex)
     print()
-    prompt_for_llm(prompt_by_vertetx)
-
+    prompt_for_llm(prompt_by_vertex)
 
 def handle_input_flags(all_input_flags):
     """
-    Handles the input flags provided by the user.
+    Processes the input flags provided by the user and performs corresponding actions.
 
     Args:
         all_input_flags (list): A list of input flags provided by the user.
     """
     if all_input_flags:
         if not all_input_flags[0] == "":
-            print(
-                "Prompt should be quoted in double quotes, and the flags must be spaced out"
-            )
+            print("Prompt should be quoted in double quotes, and the flags must be spaced out")
 
         for flag in all_input_flags:
-
             if flag.startswith("config"):
                 flags_list = flag.split(" ")
                 configure_model(flags_list[1], flags_list[2])
-                print(
-                    f"Configured model: {flags_list[1]} with API key: {flags_list[2]}"
-                )
+                print(f"Configured model: {flags_list[1]} with API key: {flags_list[2]}")
 
             elif flag == "list":
                 print("Listing all models:")
@@ -124,10 +120,10 @@ def handle_input_flags(all_input_flags):
                 print("Flags are: --config <model_name> <api_key>, remove <model_name>")
                 print()
 
-
 def setup():
     """
-    Creates a symbolic link for this script in /usr/local/bin as 'tex'.
+    Sets up the script for easy execution by creating a symbolic link in /usr/local/bin as 'tex'.
+
     Ensures the script can be run directly using the 'tex' command.
     """
     from ai_models import create_json_file
@@ -151,7 +147,6 @@ def setup():
         print("Permission denied. Try running the script with 'sudo'.")
     except Exception as e:
         print(f"An error occurred: {e}")
-
 
 if len(sys.argv) > 1 and sys.argv[1] == "--setup":
     setup()
