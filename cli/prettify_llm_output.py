@@ -18,4 +18,6 @@ def prettify_llm_output(response):
     markdown_output = response.strip().strip("```")
     console = Console()
     md = Markdown(markdown_output)
+    print()
     console.print(md)
+    print()

@@ -30,41 +30,51 @@ def user_command_line_prompt():
     
     all_input_flags = entire_cmd_command.split("--")
     all_input_flags = [x.strip() for x in all_input_flags]
-    #['', 'config gemini-1.5-flash API_KEY']
-    print("All input flags:", all_input_flags)
-    print("Prompt by user:", prompt_by_user)
-    
+
     return prompt_by_user, all_input_flags
 
 
 prompt_by_user, all_input_flags = user_command_line_prompt()
 
-
-def last_command_line_prompt():
-    import os
+def last_command_line_prompt(last_number_of_commands):
     history_file = os.path.expanduser('~/.bash_history')  
 
     with open(history_file, 'r') as file:
         history_lines = file.readlines()
-
-    last_commands = history_lines[-3:]
+    num = last_number_of_commands 
+    last_commands = history_lines[-num:]
 
     return ''.join(last_commands)
 
 
-def prompt_for_llm(prompt_by_user):
+def prompt_for_llm(prompt_for_llm):
     """
     Generates and prints the output from the language model based on the user's prompt.
 
     Args:
         prompt_by_user (str): The prompt provided by the user.
     """
-    if prompt_by_user:
-        if len(all_input_flags) > 2 and not all_input_flags[1]=='debug':
-            prompt_by_user += " give response in such a way that is outputted on a command-line interface "
+    prompt_for_llm += " give response in such a way that is outputted on a command-line interface "
 
-        r = ai_models.generate_output("gemini-1.5-flash", prompt_by_user)
-        prettify_llm_output(r)
+    r = ai_models.generate_output("gemini-1.5-flash", prompt_for_llm)
+    prettify_llm_output(r)
+
+
+def debug_last_command_line_prompt(prompt_by_user, all_input_flags):
+    
+    if len(all_input_flags) == 3:
+        last_number_of_commands = int(all_input_flags[2])
+    else:
+        last_number_of_commands = 3
+        
+    if prompt_by_user:
+        prompt_by_vertetx =  last_command_line_prompt(last_number_of_commands) + prompt_by_user + " basically output what is wrong with the commands used and suggest right ones"
+    else :
+        prompt_by_vertetx =  last_command_line_prompt(last_number_of_commands) + " output what is wrong with the commands used and suggest right ones, dont exlain about tex command"
+    
+    print("Prompt by vertex:", prompt_by_vertetx)
+    print()
+    prompt_for_llm(prompt_by_vertetx)
 
 
 def handle_input_flags(all_input_flags):
@@ -93,17 +103,6 @@ def handle_input_flags(all_input_flags):
                 print("Listing all models:")
                 ai_models.list_models()
                 
-            elif  (flag == "debug" or flag == "-d"):
-                print("Debugging mode")
-                #TODO find a way to generate debug report form last cli command
-                if prompt_by_user:
-                    #this step will look for debug report and then send it to llm
-                    prompt_by_user += "  debug report  and  prompt_by_user " 
-                    print("Prompt by user:", prompt_by_user)
-                    
-                prompt_by_user += "  debug report  "
-                print("Prompt by us:", prompt_by_user)
-                # prompt_for_llm(prompt_by_user)
                     
             elif flag.startswith("remove"):
                 flags_list = flag.split(" ")
@@ -149,12 +148,10 @@ if len(sys.argv) > 1 and sys.argv[1] == "--setup":
     setup()
 else:
     # Outputs LLM output
-    prompt_for_llm(prompt_by_user)
+    if prompt_by_user:
+        prompt_for_llm(prompt_by_user)
+    elif all_input_flags[1] == "debug":
+        debug_last_command_line_prompt(prompt_by_user, all_input_flags)
 
     # Handle input flags
     handle_input_flags(all_input_flags)
-
-
-
-
-
