@@ -9,6 +9,8 @@ model configurations, and generation of AI responses.
 import json
 import google.generativeai as genai
 import os
+import threading
+from utils import spin_loader
 
 FILE_NAME = os.path.join(os.path.dirname(__file__), "..", "models_api.json")
 
@@ -144,5 +146,14 @@ def generate_output(model_name, prompt_by_user):
     # api_key = "AIzaSyCWKme9gf6v_9aqQWCC7tUyYZxoqXVHIfQ"
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel(model_name)
+
+    stop_spinner = threading.Event()
+    spinner_thread = threading.Thread(target=spin_loader, args=(stop_spinner,))
+    spinner_thread.start()
+
     response = model.generate_content(prompt_by_user)
+
+    stop_spinner.set()
+    spinner_thread.join()
+    
     return response.text
