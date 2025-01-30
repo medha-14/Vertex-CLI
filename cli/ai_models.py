@@ -143,7 +143,6 @@ def generate_output(model_name, prompt_by_user):
         str: Generated response text.
     """
     api_key = api_key_model_selection(model_name)
-    # api_key = "AIzaSyCWKme9gf6v_9aqQWCC7tUyYZxoqXVHIfQ"
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel(model_name)
 
