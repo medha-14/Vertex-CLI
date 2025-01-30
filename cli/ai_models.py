@@ -155,5 +155,5 @@ def generate_output(model_name, prompt_by_user):
 
     stop_spinner.set()
     spinner_thread.join()
-    
+
     return response.text
