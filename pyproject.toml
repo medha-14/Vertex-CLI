@@ -1,9 +1,0 @@
-[build-system]
-requires = [
-    "setuptools>=42",
-    "wheel",
-    "rich",
-    "grpcio==1.60.1",
-    "google.generativeai"
-]
-build-backend = "setuptools.build_meta"
