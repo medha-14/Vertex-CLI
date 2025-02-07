@@ -3,9 +3,14 @@
 import subprocess
 import os
 import sys
-import ai_models
-from ai_models import configure_model, remove_model, load_models_api
-from prettify_llm_output import prettify_llm_output
+from cli.ai_models import (
+    configure_model,
+    remove_model,
+    load_models_api,
+    generate_output,
+)
+from cli.prettify_llm_output import prettify_llm_output
+import cli.ai_models as ai_models
 
 
 def user_command_line_prompt():
@@ -60,7 +65,6 @@ def prompt_for_llm(prompt_for_llm):
     prompt_for_llm += (
         " give response in such a way that is outputted on a command-line interface "
     )
-
     response = ai_models.generate_output("gemini-1.5-flash", prompt_for_llm)
     prettify_llm_output(response)
 
@@ -141,6 +145,15 @@ def setup():
         print(f"An error occurred: {e}")
 
 
+def handle_all_quries():
+    prompt_by_user, all_input_flags = user_command_line_prompt()
+    if prompt_by_user:
+        prompt_for_llm(prompt_by_user)
+    elif len(all_input_flags) > 1 and all_input_flags[1] == "debug":
+        debug_last_command_line_prompt(prompt_by_user, all_input_flags)
+    handle_input_flags(all_input_flags)
+
+
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == "--setup":
         if sys.platform in ["linux", "darwin"]:
@@ -151,16 +164,11 @@ def main():
                 "Please run the script directly using 'python3 main.py' or add it in the env variable."
             )
             print("We will support this in future versions.")
-        from ai_models import create_json_file
+        from cli.ai_models import create_json_file
 
         create_json_file()
     else:
-        prompt_by_user, all_input_flags = user_command_line_prompt()
-        if prompt_by_user:
-            prompt_for_llm(prompt_by_user)
-        elif len(all_input_flags) > 1 and all_input_flags[1] == "debug":
-            debug_last_command_line_prompt(prompt_by_user, all_input_flags)
-        handle_input_flags(all_input_flags)
+        handle_all_quries()
 
 
 if __name__ == "__main__":
