@@ -112,6 +112,7 @@ def create_json_file():
 
     with open(FILE_NAME, "w") as f:
         json.dump(default_config, f, indent=4)
+    print("JSON file created successfully.")
 
 
 def configure_model(model_name, api_key):

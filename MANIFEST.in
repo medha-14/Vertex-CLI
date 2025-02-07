@@ -1,2 +1,2 @@
-include docs/*.png
 include LICENSE
+include cli/requirements.txt

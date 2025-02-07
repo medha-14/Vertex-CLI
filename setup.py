@@ -3,15 +3,15 @@ from setuptools import setup, find_packages
 
 setup(
     name="Vertex-CLI",
-    version="0.1.12",
+    version="0.1.18",
     packages=find_packages(),
     description="A CLI tool for debugging and generating AI outputs based on prompts",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     author_email="prathamhole@gmail.com",
+    include_package_data=True,
     install_requires=[
         "rich",
-        "grpcio",
     ],
     extras_require={
         "dev": ["twine"],
@@ -19,6 +19,7 @@ setup(
     entry_points={
         "console_scripts": [
             "tex=cli.prompt:main",  # tex --setup / tex "How are you?" / tex --config <model_name> <api_key>
+            "tex-init=cli.utils:install_requirements",
         ],
     },
     classifiers=[
