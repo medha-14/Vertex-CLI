@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-
-import subprocess
 import os
 import sys
 from cli.ai_models import (
@@ -26,7 +23,7 @@ def user_command_line_prompt():
     args = [x for x in sys.argv]
     load_models_api()
 
-    if len(args) > 1 and not args[1].startswith("-"):
+    if len(args) > 1 and not args[1].startswith("--"):
         prompt_by_user = args[1]
         entire_cmd_command = " ".join(args[2:])
     else:
@@ -66,7 +63,7 @@ def prompt_for_llm(prompt_for_llm):
     prompt_for_llm += (
         " give response in such a way that is outputted on a command-line interface "
     )
-    response = ai_models.generate_output("gemini-1.5-flash", prompt_for_llm)
+    response = generate_output("gemini-1.5-flash", prompt_for_llm)
     prettify_llm_output(response)
 
 
