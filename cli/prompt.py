@@ -8,6 +8,7 @@ from cli.ai_models import (
     remove_model,
     load_models_api,
     generate_output,
+    create_json_file,
 )
 from cli.prettify_llm_output import prettify_llm_output
 import cli.ai_models as ai_models
@@ -123,29 +124,19 @@ def handle_input_flags(all_input_flags):
                 print()
 
 
-def setup():
-    """
-    Sets up the script for easy execution by creating a symbolic link in /usr/local/bin as 'tex'.
-
-    Ensures the script can be run directly using the 'tex' command.
-    """
-
-    script_path = os.path.abspath(sys.argv[0])
-    symlink_path = "/usr/local/bin/tex"
-    try:
-        os.chmod(script_path, 0o755)
-        if os.path.islink(symlink_path) or os.path.exists(symlink_path):
-            print(f"A symlink or file named 'tex' already exists at {symlink_path}.")
-            return
-        subprocess.run(["sudo", "ln", "-s", script_path, symlink_path], check=True)
-        print(f"Symbolic link created: {symlink_path} -> {script_path}")
-    except PermissionError:
-        print("Permission denied. Try running the script with 'sudo'.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-
 def handle_all_quries():
+    """
+    Handles all user queries from the command line prompt.
+
+    This function performs the following steps:
+    1. Retrieves the user command line prompt and input flags.
+    2. If a prompt is provided by the user, it processes the prompt for the LLM.
+    3. If no prompt is provided but the 'debug' flag is present, it triggers the debug function for the last command line prompt.
+    4. Handles any additional input flags provided by the user.
+
+    Returns:
+        None
+    """
     prompt_by_user, all_input_flags = user_command_line_prompt()
     if prompt_by_user:
         prompt_for_llm(prompt_by_user)
@@ -156,16 +147,6 @@ def handle_all_quries():
 
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == "--setup":
-        if sys.platform in ["linux", "darwin"]:
-            setup()
-        else:
-            print("This script is not supported on Windows.")
-            print(
-                "Please run the script directly using 'python3 main.py' or add it in the env variable."
-            )
-            print("We will support this in future versions.")
-        from cli.ai_models import create_json_file
-
         create_json_file()
     else:
         handle_all_quries()

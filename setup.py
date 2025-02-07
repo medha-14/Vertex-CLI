@@ -9,8 +9,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "vertex-cli=cli.prompt:main",  # vertex-cli --setup
-            "tex2=cli.prompt:handle_all_quries",  # Update this with your actual main script
+            "tex=cli.prompt:main",  # tex --setup / tex "How are you?" / tex --config <model_name> <api_key>
         ],
     },
     classifiers=[
