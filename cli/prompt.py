@@ -140,9 +140,22 @@ def handle_all_quries():
     handle_input_flags(all_input_flags)
 
 
+def install_google_generativeai():
+    import subprocess
+
+    try:
+        subprocess.run(
+            ["pip", "install", "-U", "-q", "google-generativeai"], check=True
+        )
+        print("Successfully installed/updated google-generativeai.")
+    except subprocess.CalledProcessError as e:
+        print(f"Installation failed: {e}")
+
+
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == "--setup":
         create_json_file()
+        install_google_generativeai()
     else:
         handle_all_quries()
 

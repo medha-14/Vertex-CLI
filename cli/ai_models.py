@@ -103,8 +103,9 @@ def create_json_file():
         FILE_NAME (str): The name of the file to be created.
         default_config (dict): The default configuration to write to the file.
     """
+    # A testing api key for gemini-1.5-flash is added.
     default_config = {
-        "gemini-1.5-flash": None,
+        "gemini-1.5-flash": "AIzaSyCSXtRAITXfGuarMHI1j-0QyKkoT9mUfz8",
         "gemini-1.5-interactive": None,
         "gemini-1.5-creative": None,
     }
