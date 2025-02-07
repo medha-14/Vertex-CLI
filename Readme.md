@@ -23,16 +23,21 @@ Follow these steps to get started:
 
 ## Setup
 
-1. Run the initial setup script:
+1. Run the initial setup script to install the package:
    ```bash
-   python3 cli/prompt.py --setup
+   pip install .
    ```
 
-2. Configure the CLI with your model details:
+2. After the installation, execute the setup command:
    ```bash
-   tex --config <gemini-model> <model-api-key>
+   tex --setup
    ```
-   Replace `<gemini-model>` with your model name and `<model-api-key>` with your API key.
+
+3. Configure the CLI with your model details:
+   ```bash
+   tex --config gemini-1.5-flash <model-api-key>
+   ```
+   Replace `gemini-1.5-flash` with your model name and `<model-api-key>` with your API key.
 
 You're now ready to use Vertex CLI!
 
