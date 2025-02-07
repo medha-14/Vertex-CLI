@@ -1,3 +1,6 @@
 models_api.json
 __pycache__/
 *.pyc
+build/
+dist/
+Vertex_CLI.egg-info/

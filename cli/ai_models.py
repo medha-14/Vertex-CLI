@@ -10,7 +10,7 @@ import json
 import google.generativeai as genai
 import os
 import threading
-from utils import spin_loader
+from cli.utils import spin_loader
 
 FILE_NAME = os.path.join(os.path.dirname(__file__), "..", "models_api.json")
 
