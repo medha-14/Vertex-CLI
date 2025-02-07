@@ -60,9 +60,7 @@ def prompt_for_llm(prompt_for_llm):
     Args:
         prompt_for_llm (str): The prompt to send to the language model.
     """
-    prompt_for_llm += (
-        " give response in such a way that is outputted on a command-line interface "
-    )
+    prompt_for_llm += " give response in short form, if asked for commands then give commands and dont explain too much"
     response = generate_output("gemini-1.5-flash", prompt_for_llm)
     prettify_llm_output(response)
 
