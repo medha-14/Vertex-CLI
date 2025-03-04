@@ -4,42 +4,50 @@ Vertex CLI is a powerful command-line tool designed to streamline your workflows
 
 ---
 
-## Installation
+## Installation and Setup
 
 Follow these steps to get started:
 
-1. Clone the repository:
+
+
+### Install Vertex-CLI from TestPyPI
+
+To install `Vertex-CLI` from TestPyPI, use the following command:
+
+```bash
+pip install -i https://test.pypi.org/simple/ Vertex-CLI==0.1.26
+```
+
+---
+
+### Install the Editable Version of the Project  (Optional)
+
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/Prtm2110/Vertex-CLI
    cd Vertex-CLI
    ```
 
-2. Install the required dependencies:
+2. **Run the initial setup script** to install the package in editable mode:
+
    ```bash
-   pip install -r requirements.txt
+   pip install -e .
    ```
 
----
+### Set up the CLI by running the following command. This will add a free API key for you to use:
 
-## Setup
-
-1. Run the initial setup script to install the package:
-   ```bash
-   pip install .
-   ```
-
-2. After the installation, execute the setup command:
    ```bash
    tex --setup
    ```
 
-3. Configure the CLI with your model details:
+### Configure the CLI with your model details (optional):
+
    ```bash
    tex --config gemini-1.5-flash <model-api-key>
    ```
+
    Replace `gemini-1.5-flash` with your model name and `<model-api-key>` with your API key.
 
-You're now ready to use Vertex CLI!
 
 ---
 
