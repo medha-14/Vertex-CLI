@@ -104,6 +104,7 @@ def create_json_file():
     """
     # A testing api key for gemini-1.5-flash is added.
     default_config = {
+        "selected_model": None,
         "gemini-1.5-flash": "AIzaSyCSXtRAITXfGuarMHI1j-0QyKkoT9mUfz8",
         "gemini-1.5-interactive": None,
         "gemini-1.5-creative": None,
@@ -132,6 +133,33 @@ def configure_model(model_name, api_key):
     print("Model added successfully.")
 
 
+def list_models():
+    """
+    List all available models and their API keys.
+
+    Example:
+        ``tex --list``
+        gemini-1.5-flash: your_api_key_here
+    """
+    models_api_dict = load_models_api()
+    if models_api_dict:
+        for model, api_key in models_api_dict.items():
+            print(f"{model}: {api_key}")
+    else:
+        print("No models found.")
+
+
+def select_model(model_name):
+    models_api_dict = load_models_api()
+
+    if model_name in models_api_dict and models_api_dict[model_name]:
+        models_api_dict["selected_model"] = model_name
+        update_models_api_json(models_api_dict)
+        print(f"Selected model: {model_name}")
+    else:
+        print("No models found or there is no api key for that model")
+
+
 def generate_output(model_name, prompt_by_user):
     """
     Generate AI response using specified model.
@@ -144,8 +172,6 @@ def generate_output(model_name, prompt_by_user):
         str: Generated response text.
     """
     from cli.llm import gemini_api_output
-
-    api_key = api_key_model_selection(model_name)
 
     stop_spinner = threading.Event()
     spinner_thread = threading.Thread(target=spin_loader, args=(stop_spinner,))

@@ -7,6 +7,7 @@ from cli.ai_models import (
     load_models_api,
     generate_output,
     create_json_file,
+    api_key_model_selection,
 )
 from cli.prettify_llm_output import prettify_llm_output
 import cli.ai_models as ai_models
@@ -62,7 +63,14 @@ def prompt_for_llm(prompt_for_llm):
         prompt_for_llm (str): The prompt to send to the language model.
     """
     prompt_for_llm += " give response in short form, if asked for commands then give commands and dont explain too much"
-    response = generate_output("gemini-1.5-flash", prompt_for_llm)
+
+    models_api_dict = load_models_api()
+    if models_api_dict["selected_model"] is None:
+        model_name = "gemini-1.5-flashdas"  # default
+    else:
+        model_name = models_api_dict["selected_model"]
+
+    response = generate_output(model_name, prompt_for_llm)
     prettify_llm_output(response)
 
 
@@ -100,8 +108,8 @@ def handle_input_flags(all_input_flags):
             )
 
         for flag in all_input_flags:
+            flags_list = flag.split(" ")
             if flag.startswith("config"):
-                flags_list = flag.split(" ")
                 configure_model(flags_list[1], flags_list[2])
                 print(
                     f"Configured model: {flags_list[1]} with API key: {flags_list[2]}"
@@ -110,9 +118,10 @@ def handle_input_flags(all_input_flags):
                 print("Listing all models:")
                 ai_models.list_models()
             elif flag.startswith("remove"):
-                flags_list = flag.split(" ")
                 print("Removing model:", flags_list[1])
                 remove_model(flags_list[1])
+            elif flag.startswith("select"):
+                ai_models.select_model(flags_list[1])
             elif flag == "help":
                 print("Usage: python3 main.py <prompt>")
                 print("Example: python3 main.py 'How are you?'")
