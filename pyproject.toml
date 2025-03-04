@@ -1,6 +1,6 @@
 [project]
 name = "Vertex-CLI"
-version = "0.1.36"
+version = "0.1.37"
 description = "A CLI tool for debugging and generating AI outputs based on prompts"
 readme = "README.md"
 authors = [
