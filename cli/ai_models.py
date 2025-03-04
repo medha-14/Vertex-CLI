@@ -10,8 +10,6 @@ import json
 import os
 import threading
 from cli.utils import spin_loader
-from google import genai
-from google.genai import types
 
 FILE_NAME = os.path.join(os.path.dirname(__file__), "..", "models_api.json")
 
@@ -134,25 +132,6 @@ def configure_model(model_name, api_key):
     print("Model added successfully.")
 
 
-def gemini_api_output(model_name, prompt_by_user):
-    """
-    Generate AI response using specified model.
-
-    Args:
-        model_name (str): Name of the AI model to use.
-        prompt_by_user (str): User's input prompt.
-
-    Returns:
-        str: Generated response text.
-    """
-    api_key = api_key_model_selection(model_name)
-
-    client = genai.Client(api_key=api_key)
-    response = client.models.generate_content(model=model_name, contents=prompt_by_user)
-
-    return response.text
-
-
 def generate_output(model_name, prompt_by_user):
     """
     Generate AI response using specified model.
@@ -164,6 +143,8 @@ def generate_output(model_name, prompt_by_user):
     Returns:
         str: Generated response text.
     """
+    from cli.llm import gemini_api_output
+
     api_key = api_key_model_selection(model_name)
 
     stop_spinner = threading.Event()
