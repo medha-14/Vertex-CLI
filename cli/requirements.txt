@@ -1,3 +1,0 @@
-rich
-grpcio
-google.generativeai
