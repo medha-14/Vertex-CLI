@@ -1,5 +1,6 @@
 import os
 import sys
+import subprocess
 from cli.ai_models import (
     configure_model,
     remove_model,

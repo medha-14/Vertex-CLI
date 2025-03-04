@@ -1,6 +1,6 @@
 [project]
 name = "Vertex-CLI"
-version = "0.1.26"
+version = "0.1.36 "
 description = "A CLI tool for debugging and generating AI outputs based on prompts"
 readme = "README.md"
 authors = [
@@ -17,11 +17,6 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12"
-]
-dependencies = [
-    "rich",
-    "grpcio",
-    "google-generativeai",
 ]
 [project.urls]
 Homepage = "https://github.com/Prtm2110/Vertex-CLI"

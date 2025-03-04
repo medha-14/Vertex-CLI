@@ -1,6 +1,7 @@
 import itertools
 import sys
 import time
+import subprocess
 
 
 def spin_loader(stop_event):
@@ -18,3 +19,17 @@ def spin_loader(stop_event):
         sys.stdout.write("\b")
     sys.stdout.write(" ")
     sys.stdout.flush()
+
+
+def install_requirements():
+    """
+    Installs the required dependencies for the application.
+    """
+
+    dependencies = ["rich", "google-genai"]
+    for package in dependencies:
+        subprocess.run([sys.executable, "-m", "pip", "install", package])
+
+    from cli.ai_models import create_json_file
+
+    create_json_file()
