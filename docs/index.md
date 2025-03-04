@@ -10,6 +10,8 @@ Some `code` goes here.
 
 ### Plain codeblock
 
+ref cli_tool_docs.md
+
 A plain codeblock:
 
 ```
