@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="Vertex-CLI",
-    version="0.1.18",
+    version="0.1.22",
     packages=find_packages(),
     description="A CLI tool for debugging and generating AI outputs based on prompts",
     long_description=open("README.md").read(),
