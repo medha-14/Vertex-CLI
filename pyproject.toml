@@ -26,7 +26,7 @@ Homepage = "https://github.com/Prtm2110/Vertex-CLI"
 Repository = "https://github.com/Prtm2110/Vertex-CLI"
 
 [project.optional-dependencies]
-dev = ["twine"]
+dev = ["twine", "build", "mkdocs-material", "mkdocs-material[imaging]"]
 
 [project.scripts]
 tex = "cli.prompt:main"

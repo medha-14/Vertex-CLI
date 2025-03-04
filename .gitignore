@@ -4,3 +4,4 @@ __pycache__/
 build/
 dist/
 Vertex_CLI.egg-info/
+.cache/*
