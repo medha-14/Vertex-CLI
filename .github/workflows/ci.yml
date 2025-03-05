@@ -20,6 +20,6 @@ jobs:
           path: ~/.cache/pip
           restore-keys: |
             ${{ runner.os }}-pip-
-      - run: pip install mkdocs-material
+      - run: pip install mkdocs-material mkdocstrings mkdocstrings-python
       - run: pip install pillow cairosvg
       - run: mkdocs gh-deploy --force
