@@ -1,10 +1,12 @@
-site_name: Vertex-ClI Documentation
+site_name: Vertex-CLI Documentation
 site_url: https://github.com/prtm2110/vertex-cli
 theme:
   name: material
   features:
     - navigation.tabs
     - navigation.sections
+    - navigation.instant
+    - navigation.expand
     - toc.integrate
     - navigation.top
     - search.suggest
@@ -12,20 +14,26 @@ theme:
     - content.tabs.link
     - content.code.annotation
     - content.code.copy
+    - content.action.edit
+    - content.tooltips
+    - content.footnotes
+    - navigation.footer
+    - navigation.indexes
+    - navigation.tracking
   language: en
   palette:
-    - scheme: default
-      toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to dark mode
-      primary: teal
-      accent: purple
     - scheme: slate
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
-      primary: teal
-      accent: lime
+      primary: deep purple
+      accent: amber
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+      primary: deep purple
+      accent: light blue
 
 plugins:
   - social
@@ -57,8 +65,8 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.mark
+  - pymdownx.smartsymbols
   - attr_list
 
-
 copyright: |
-  &copy; 2025 <a href="https://github.com/prtm2110"  target="_blank" rel="noopener">Pratham Hole</a>
+  &copy; 2025 <a href="https://github.com/prtm2110" target="_blank" rel="noopener">Pratham Hole</a>
