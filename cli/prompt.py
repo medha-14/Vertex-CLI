@@ -66,7 +66,7 @@ def prompt_for_llm(prompt_for_llm):
 
     models_api_dict = load_models_api()
     if models_api_dict["selected_model"] is None:
-        model_name = "gemini-1.5-flashdas"  # default
+        model_name = "gemini-1.5-flash"  # default
     else:
         model_name = models_api_dict["selected_model"]
 
