@@ -30,6 +30,13 @@ theme:
 plugins:
   - social
   - search
+  - mkdocstrings
+
+nav:
+  - Home: index.md
+  - CLI Tool Guide: cli_tool_docs.md
+  - Contributors Guide: contributors_guide.md
+  - API Reference: references.md
 
 extra:
   social:
@@ -54,4 +61,4 @@ markdown_extensions:
 
 
 copyright: |
-  &copy; 2023 <a href="https://github.com/prtm2110"  target="_blank" rel="noopener">Pratham Hole</a>
+  &copy; 2025 <a href="https://github.com/prtm2110"  target="_blank" rel="noopener">Pratham Hole</a>
