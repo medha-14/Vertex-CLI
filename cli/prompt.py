@@ -1,9 +1,11 @@
 import os
 import sys
+import json
 from cli.ai_model_manager import AIModelManager
 from cli.prettify_llm_output import prettify_llm_output
 
 manager = AIModelManager()
+HISTORY_FILE = "chat_history.json"
 
 
 def user_command_line_prompt():
@@ -45,17 +47,42 @@ def last_command_line_prompt(last_number_of_commands):
     return "".join(last_commands)
 
 
-def prompt_for_llm(prompt_for_llm):
-    """
-    Sends a prompt to the selected LLM model and prints the response.
+def prompt_for_llm(prompt_for_llm, max_history=10):
 
-    Args:
-        prompt_for_llm (str): The prompt to send to the model.
-    """
-    prompt_for_llm += " give response in short form, if asked for commands then give commands and dont explain too much"
+    def load_chat_history():
+        if os.path.exists(HISTORY_FILE):
+            with open(HISTORY_FILE, "r") as f:
+                try:
+                    return json.load(f)
+                except json.JSONDecodeError:
+                    return []
+        return []
+
+    def save_chat_history(history):
+        with open(HISTORY_FILE, "w") as f:
+            json.dump(history, f, indent=2)
+
+    # Load and update history
+    chat_history = load_chat_history()
+    styled_prompt = (
+        prompt_for_llm
+        + "System prompt: Give response in short and MD format, if asked for commands then give commands and don't explain too much"
+    )
+    chat_history.append({"role": "user", "content": styled_prompt})
+
+    # Flatten history to a single string for LLM
+    flat_prompt = ""
+    for message in chat_history[-max_history:]:
+        role = message["role"].capitalize()
+        flat_prompt += f"{role}: {message['content']}\n"
+
     models_api_dict = manager.load()
-    model_name = models_api_dict["selected_model"] or "gemini-1.5-flash"
-    response = manager.generate_output(model_name, prompt_for_llm)
+    model_name = models_api_dict.get("selected_model") or "gemini-1.5-flash"
+    response = manager.generate_output(model_name, flat_prompt)  # now a string
+
+    chat_history.append({"role": "assistant", "content": response})
+    save_chat_history(chat_history[-max_history:])
+
     prettify_llm_output(response)
 
 
